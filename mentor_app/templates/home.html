@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+{% load static %}
+{% block title %}Avaleht{% endblock %}
+
+{% block content %}
+<h2 class="mb-4">Tere tulemast, {{ user.username }}!</h2>
+
+<!-- ChatGPT Küsitluse vorm -->
+<div class="card mb-4 shadow-sm">
+    <div class="card-header bg-primary text-white">
+        Küsi oma mentorilt
+    </div>
+    <div class="card-body">
+        <form method="post">
+            {% csrf_token %}
+            <div class="form-group">
+                <textarea name="question" class="form-control" rows="3" placeholder="Esita oma küsimus..."></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">Küsi mentorilt</button>
+        </form>
+    </div>
+</div>
+
+<!-- ChatGPT Vastus -->
+{% if response %}
+    <div class="alert alert-info">
+        <strong>Mentor:</strong><br>
+        {{ response|linebreaks }}
+    </div>
+{% endif %}
+{% if not request.user.userprofile.is_approved %}
+  <div class="alert alert-warning">
+      Sinu staatus <strong>{{ request.user.userprofile.get_status_display }}</strong> vajab veel kinnitamist administraatori poolt.
+  </div>
+{% endif %}
+
+<!-- Piltide näitamine -->
+{% if images %}
+    <h4 class="mt-5">Sinu üles laetud pildid</h4>
+    <div class="row">
+        {% for img in images %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <img src="{{ img.image.url }}" class="card-img-top" alt="Pilt">
+                    <div class="card-body">
+                        <small class="text-muted">Laetud: {{ img.uploaded_at|date:"d.m.Y H:i" }}</small>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+
+{% else %}
+    <p class="text-muted">Sa ei ole veel ühtegi pilti üles laadinud.</p>
+{% endif %}
+{% endblock %}

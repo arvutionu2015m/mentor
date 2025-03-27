@@ -1,0 +1,21 @@
+{% extends "admin/login.html" %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link id="theme-css" rel="stylesheet" type="text/css" href="{% static 'css/admin_light.css' %}">
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'js/theme_toggle.js' %}"></script>
+{% endblock %}
+
+{% block content_title %}
+    <h1 class="text-center mb-3">🔐 Mentor – Sisselogimine</h1>
+    <div class="text-center mb-3">
+        <button id="theme-toggle-btn" class="btn btn-sm btn-outline-secondary">
+            🌙 Tume režiim
+        </button>
+    </div>
+{% endblock %}

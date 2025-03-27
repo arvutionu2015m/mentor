@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}Minu küsimused{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">📋 Minu küsimused ja vastused</h2>
+
+    {% if logs %}
+        <div class="list-group">
+            {% for log in logs %}
+                <div class="list-group-item mb-3 {% if log.teacher_comment %}border-success{% endif %}">
+                    <p>
+                        <strong>
+                            ❓ Küsimus:
+                            {% if log.teacher_comment %}
+                                <span class="text-success">✅</span>
+                            {% else %}
+                                <span class="text-muted">🕓</span>
+                            {% endif %}
+                        </strong>
+                        {{ log.question }}
+                    </p>
+
+                    <p><strong>💡 Vastus:</strong> {{ log.answer }}</p>
+
+                    {% if log.teacher_comment %}
+                        <p class="mt-2"><strong>🧑‍🏫 Õpetaja kommentaar:</strong> <span class="text-success">{{ log.teacher_comment }}</span></p>
+                    {% else %}
+                        <p class="mt-2 text-muted">📭 Kommentaar puudub</p>
+                    {% endif %}
+
+                    <p class="text-muted small mb-0">⏱ {{ log.timestamp|date:"d.m.Y H:i" }}</p>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="alert alert-info">Sul pole veel ühtegi küsimust.</p>
+    {% endif %}
+</div>
+{% endblock %}

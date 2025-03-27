@@ -1,0 +1,63 @@
+{% extends "base.html" %}
+{% block title %}Õpetaja juhtpaneel{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">👩‍🏫 Õpetaja juhtpaneel</h2>
+
+    <!-- ✅ Õpilaste koguarv -->
+    <div class="alert alert-info">
+        📊 <strong>Õpilaste koguarv:</strong> {{ student_count }}
+    <!-- Teavitused -->
+    {% if messages %}
+    
+    {% for message in messages %}
+    <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+    {% endfor %}
+    
+    {% endif %}
+
+    <!-- Uue õpilase lisamise vorm -->
+    
+
+    <!-- Olemasolevate õpilaste tabel -->
+    <div class="card shadow-sm">
+        <a href="{% url 'add_student' %}" class="btn btn-primary mb-4">➕ Lisa uus õpilane</a>
+        <div class="card-header bg-secondary text-white">👥 Õpilaste nimekiri</div>
+        <div class="card-body p-0">
+            <table class="table table-striped mb-0">
+                <thead class="thead-light">
+                    <tr>
+                        <th>Kasutajanimi</th>
+                        <th>Eesnimi</th>
+                        <th>E-post</th>
+                        <th>Staatus</th>
+                        <th>Kinnitatud</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr>
+                        <td>{{ student.user.username }}</td>
+                        <td>{{ student.user.first_name }}</td>
+                        <td>{{ student.user.email }}</td>
+                        <td>{{ student.get_status_display }}</td>
+                        <td>
+                            {% if student.is_approved %}
+                            ✅
+                            {% else %}
+                            ❌
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="5" class="text-center">Ühtegi õpilast ei leitud.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

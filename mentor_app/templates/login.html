@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}Logi sisse{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-6">
+        <h2 class="mb-4">Logi oma kontole</h2>
+        <form method="post">
+            {% csrf_token %}
+            {{ form|crispy }}
+            <button type="submit" class="btn btn-success">Logi sisse</button>
+        </form>
+        <p class="mt-3">Pole veel kontot? <a href="{% url 'signup' %}">Registreeru siin</a></p>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,15 @@
+/**** Admini päise logo muutmine ****/
+#header {
+  background-color: #003366;
+  padding-left: 60px;
+  background-image: url('/static/images/logo.png');
+  background-repeat: no-repeat;
+  background-position: 10px center;
+  background-size: 40px auto;
+}
+
+#site-name {
+  color: #004aca;
+  font-weight: bold;
+  font-size: 18px;
+}

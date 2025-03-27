@@ -1,0 +1,22 @@
+{% extends "admin/base.html" %}
+{% load static %}
+
+{% block extrastyle %}
+    {{ block.super }}
+    <link id="theme-css" rel="stylesheet" type="text/css" href="{% static 'css/admin_light.css' %}">
+{% endblock %}
+
+{% block extrahead %}
+    {{ block.super }}
+    <script src="{% static 'js/theme_toggle.js' %}"></script>
+{% endblock %}
+
+{% block branding %}
+  <h1 id="site-name">
+    Mentor Admin
+    <button id="theme-toggle-btn" class="btn btn-sm btn-outline-light ml-2" style="float:right;">
+      🌙 Tume režiim
+    </button>
+  </h1>
+  <script src="{% static 'js/theme_toggle.js' %}"></script>
+{% endblock %}

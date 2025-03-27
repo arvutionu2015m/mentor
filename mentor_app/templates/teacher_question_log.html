@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block title %}Õpilaste küsimuste logi{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h2 class="mb-4">📚 Õpilaste küsimuste logi</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+    {% endif %}
+
+    {% if logs %}
+        {% for log in logs %}
+            <div class="card mb-4 shadow-sm {% if log.teacher_comment %}border-success{% endif %}">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <strong>{{ log.user.username }}</strong>
+                    <span class="text-muted small">{{ log.timestamp|date:"d.m.Y H:i" }}</span>
+                </div>
+                <div class="card-body">
+                    <p><strong>❓ Küsimus:</strong> {{ log.question }}</p>
+
+                    <button class="btn btn-outline-secondary btn-sm mb-2" type="button" data-toggle="collapse" data-target="#details{{ log.id }}" aria-expanded="false" aria-controls="details{{ log.id }}">
+                        👁 Näita vastust ja kommentaari
+                    </button>
+
+                    <div class="collapse" id="details{{ log.id }}">
+                        <div class="bg-light p-3 rounded mb-3">
+                            <strong>💡 Vastus:</strong><br>
+                            {{ log.answer|linebreaksbr }}
+                        </div>
+
+                        <form method="post">
+                            {% csrf_token %}
+                            <input type="hidden" name="log_id" value="{{ log.id }}">
+                            <div class="form-group">
+                                <label for="comment_{{ log.id }}"><strong>🧑‍🏫 Õpetaja kommentaar:</strong></label>
+                                <textarea name="teacher_comment" id="comment_{{ log.id }}" class="form-control" rows="3">{{ log.teacher_comment }}</textarea>
+                            </div>
+                            <button type="submit" class="btn btn-sm btn-primary">💬 Salvesta kommentaar</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <div class="alert alert-info">Küsimuste logi on hetkel tühi.</div>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% load static %}
+{% load crispy_forms_tags %}
+<!DOCTYPE html>
+<html lang="et">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Mentor{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <!-- Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="{% url 'home' %}">Mentor</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarNav">
+            <ul class="navbar-nav mr-auto">
+                {% if user.is_authenticated %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'home' %}">Kodu</a></li>
+                {% endif %}
+            </ul>
+            <ul class="navbar-nav">
+                <!-- Näita menüüd ainult õpetajale -->
+                {% if user.is_authenticated and user.userprofile.status == 'student' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'my_questions' %}">📋 Minu küsimused</a>
+                </li>
+            {% endif %}            
+                {% if user.is_authenticated and user.userprofile.status == 'teacher' %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'teacher_dashboard' %}">Õpetaja paneel</a>
+                </li>
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'teacher_question_log' %}">Küsimuste logi</a>
+                </li>
+                {% endif %}
+
+
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <span class="navbar-text mr-2">Tere, {{ user.username }}</span>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Logi välja</a>
+                </li>
+                {% else %}
+                <li class="nav-item"><a class="nav-link" href="{% url 'login' %}">Logi sisse</a></li>
+                <li class="nav-item"><a class="nav-link" href="{% url 'signup' %}">Registreeru</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Flash messages -->
+    <div class="container mt-3">
+        {% if messages %}
+        {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">{{ message }}</div>
+        {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Page Content -->
+    <div class="container mt-4">
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white text-center py-3 mt-5">
+        &copy; {{ now|date:"Y" }} Mentor. Õppimise tugi ja juhendamine.
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+    
+</body>
+
+</html>
